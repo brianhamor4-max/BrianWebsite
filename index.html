@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hamor Website - Silent Sanctuary Playlist</title>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<style>
+/* RESET */
+* { margin:0; padding:0; box-sizing:border-box; font-family:'Segoe UI', sans-serif; scroll-behavior:smooth; }
+body { background: linear-gradient(135deg,#f5f7fa,#c3cfe2); color:#333; line-height:1.6; }
+
+/* HEADER */
+.header { position:sticky; top:0; background: rgba(0,0,0,0.85); padding:15px 0; z-index:1000; box-shadow:0 4px 6px rgba(0,0,0,0.2);}
+.navbar { display:flex; justify-content:center; gap:25px; flex-wrap:wrap;}
+.navbar a { color:#fff; text-decoration:none; font-weight:bold; font-size:1.1rem; transition:0.3s; }
+.navbar a:hover { color:#ff6b81; }
+
+/* HOME */
+.home { display:flex; justify-content:center; align-items:center; height:90vh; text-align:center; flex-direction:column; }
+.home h1 { font-size:3rem; color:#264de4; margin-bottom:15px; }
+.home p { font-size:1.2rem; color:#555; max-width:600px; }
+
+/* ABOUT */
+.about .contain { display:flex; flex-wrap:wrap; justify-content:center; align-items:center; padding:50px 20px; gap:40px; }
+.profile img { width:250px; border-radius:50%; border:5px solid #ff6b81; box-shadow:0 4px 10px rgba(0,0,0,0.3);}
+.about-text { max-width:600px; }
+.about-text h2 { margin-bottom:15px; color:#ff6b81; }
+.about-text p { font-size:1rem; color:#555; }
+
+/* SKILLS */
+.skills { padding:50px 20px; background:#f0f0f0; text-align:center; }
+.skills h2 { margin-bottom:30px; color:#264de4; }
+.skills-container { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:20px; }
+.skill p { margin-bottom:5px; font-weight:bold; }
+.skill-bar { background:#ddd; border-radius:10px; overflow:hidden; height:20px; box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);}
+.skill-fill { height:100%; border-radius:10px; transition:width 1s ease-in-out; }
+.html{width:80%; background:#e44d26;} 
+.css{width:70%; background:#264de4;} 
+.java{width:60%; background:#f0db4f;} 
+.design{width:90%; background:#ff6b81;}
+
+/* GALLERY */
+.gallery { padding:50px 20px; text-align:center; }
+.gallery h2 { margin-bottom:30px; color:#264de4; }
+.gallerygrid { display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:15px; }
+.gallerygrid img { width:100%; border-radius:10px; transition: transform 0.3s, box-shadow 0.3s; cursor:pointer; }
+.gallerygrid img:hover { transform:scale(1.05); box-shadow:0 4px 15px rgba(0,0,0,0.3); }
+
+/* CONTACT */
+.contact { padding:50px 20px; text-align:center; }
+.contact h2 { margin-bottom:15px; color:#264de4; }
+.contact p { margin-bottom:20px; color:#555; }
+.socials { display:flex; justify-content:center; gap:20px; flex-wrap:wrap; }
+.socials a { display:flex; align-items:center; gap:8px; text-decoration:none; color:#fff; background:#ff6b81; padding:10px 15px; border-radius:50px; transition:0.3s; }
+.socials a:hover { background:#ff3b61; }
+
+/* FOOTER */
+footer { text-align:center; padding:20px; background:#333; color:#fff; }
+
+/* BACK TO TOP BUTTON */
+.back-home { position:fixed; bottom:20px; right:20px; background:#ff6b81; color:#fff; padding:10px 15px; border-radius:50%; text-decoration:none; font-size:20px; transition:0.3s; }
+.back-home:hover { background:#ff3b61; }
+
+/* MUSIC BUTTON */
+.music-btn { position:fixed; bottom:80px; right:20px; padding:10px 15px; background:#264de4; color:#fff; border:none; border-radius:50px; cursor:pointer; transition:0.3s; box-shadow:0 4px 10px rgba(0,0,0,0.2);}
+.music-btn:hover { background:#1a3bb8; }
+
+/* RESPONSIVE */
+@media(max-width:768px){
+    .about .contain{flex-direction:column;}
+    .skills-container{grid-template-columns:1fr;}
+    .home h1{font-size:2.2rem;}
+}
+</style>
+
+</head>
+<body>
+
+<!-- MUSIC PLAYLIST -->
+<audio id="bg-music" autoplay></audio>
+
+<!-- MUSIC CONTROL BUTTON -->
+<button onclick="toggleMusic()" class="music-btn">🎵 Play/Pause Music</button>
+
+<script>
+// Playlist of 14 Silent Sanctuary songs
+const playlist = [
+  "music1.mp3","song2.mp3","song3.mp3","song4.mp3","song5.mp3","song6.mp3",
+  "song7.mp3","song8.mp3","song9.mp3","song10.mp3","song11.mp3","song12.mp3",
+  "song13.mp3","song14.mp3"
+];
+
+let currentSong = 0;
+const music = document.getElementById("bg-music");
+
+// Fade-in/fade-out effect for smoother transitions
+function playNextSong() {
+    music.volume = 0;
+    currentSong = (currentSong + 1) % playlist.length;
+    music.src = playlist[currentSong];
+    music.play();
+    let vol = 0;
+    const fadeInterval = setInterval(()=>{
+        if(vol<1){ vol += 0.02; music.volume = vol; }
+        else clearInterval(fadeInterval);
+    },50);
+}
+
+music.addEventListener("ended", playNextSong);
+
+// Start first song with fade-in
+music.src = playlist[currentSong];
+music.volume = 0;
+music.play();
+let volStart = 0;
+const fadeStart = setInterval(()=>{
+    if(volStart<1){ volStart += 0.02; music.volume = volStart; }
+    else clearInterval(fadeStart);
+},50);
+
+// Toggle music
+function toggleMusic() {
+  if(music.paused){
+    music.play();
+  } else {
+    music.pause();
+  }
+}
+</script>
+
+<!-- HEADER -->
+<header class="header">
+<nav class="navbar">
+<a href="#home">Home</a>
+<a href="#about">About Me</a>
+<a href="#skills">Skills</a>
+<a href="#gallery">Gallery</a>
+<a href="#contact">Contacts</a>
+</nav>
+</header>
+
+<main>
+
+<!-- HOME -->
+<section id="home" class="home">
+<div class="home-album">
+<h1>Welcome To My Website</h1>
+<p>Enjoy my Silent Sanctuary playlist while browsing!</p>
+</div>
+</section>
+
+<!-- ABOUT -->
+<section id="about" class="about">
+<div class="contain">
+<div class="profile">
+<img src="profile.jpg" alt="Profile">
+</div>
+<div class="about-text">
+<h2>About Me</h2>
+<p>Hello! My name is Brian Hamor from San Pablo City. I am learning web development and this website is my first project using HTML and CSS. I enjoy designing and building simple websites while improving my coding skills.</p>
+</div>
+</div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills" class="skills">
+<h2>My Skills</h2>
+<div class="skills-container">
+<div class="skill"><p>loving u</p><div class="skill-bar"><div class="skill-fill html"></div></div></div>
+<div class="skill"><p>eating</p><div class="skill-bar"><div class="skill-fill css"></div></div></div>
+<div class="skill"><p>playing ML</p><div class="skill-bar"><div class="skill-fill java"></div></div></div>
+<div class="skill"><p>matulog</p><div class="skill-bar"><div class="skill-fill design"></div></div></div>
+</div>
+</section>
+
+<!-- GALLERY -->
+<section id="gallery" class="gallery">
+<h2>My Album</h2>
+<div class="gallerygrid">
+<img src="image1.jpeg" alt="mah babyy">
+<img src="image2.jpeg" alt="">
+<img src="image3.jpeg" alt="">
+<img src="image4.jpeg" alt="">
+<img src="image5.jpg" alt="">
+<img src="image6.jpg" alt="">
+<img src="image7.jpg" alt="">
+<img src="8.jpg" alt="">
+<img src="9.jpg" alt="">
+<img src="10.jpg" alt="">
+<img src="11.jpg" alt="">
+<img src="12.jpg" alt="">
+<img src="13.jpeg" alt="">
+<img src="14.jpeg" alt="">
+<img src="15.jpeg" alt="">
+<img src="16.jpeg" alt="">
+</div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact" class="contact">
+<h2>Contact Me</h2>
+<p>You can reach me through my social media:</p>
+<div class="socials">
+<a href="https://www.facebook.com/share/18Jjm9MVKP/" class="fa fa-facebook"> Brian Hamor</a>
+<a href="https://www.instagram.com/ur.brixn?igsh=MWdsOTN2NjY3ejh4cg==" class="fa fa-instagram"> ur.brian</a>
+<a href="tel:0970769402">+63970769402</a>
+</div>
+</section>
+
+</main>
+
+<!-- FOOTER -->
+<footer>
+<p>© Hamor Website All Rights Reserved</p>
+</footer>
+
+<!-- BACK TO TOP BUTTON -->
+<a href="#home" class="back-home">⬆</a>
+
+</body>
+</html>
